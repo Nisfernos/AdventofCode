@@ -9,7 +9,7 @@ class DayFormat():
 
     def parse_input(self, text_file) -> None:
         with open(text_file) as txt:
-            return txt.readlines()
+            return txt.read().splitlines()
 
     def part_one(self):
         pass
