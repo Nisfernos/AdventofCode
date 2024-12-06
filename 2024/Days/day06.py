@@ -1,5 +1,4 @@
 from Utils.Day import DayFormat
-import copy
 
 
 class Day(DayFormat):
@@ -49,13 +48,13 @@ class Day(DayFormat):
         # position row, column or y,x
         new_position = self.next_move(self.position, self.direction)
         blockades = set()
-        # i = 0
+        i = 0
+        just_turned = False
         while 0 <= new_position[0] < len(self.input) and 0 <= new_position[1] < len(self.input[0]):
             if (self.input[new_position[0]][new_position[1]] != "#" and new_position != start_position # ChatGPT self.input[newpos] -> newpos
-                and new_position not in blockades):
+                and new_position not in blockades and not just_turned):
                 # Make playing field with new block
-                # input2 = [llist[:] for llist in self.input]
-                input2 = copy.deepcopy(self.input)
+                input2 = [llist[:] for llist in self.input]
                 input2[new_position[0]][new_position[1]] = "#"
                 if self.check_if_loop(input2, self.position, self.direction):
                     blockades.add(new_position)
@@ -64,10 +63,12 @@ class Day(DayFormat):
             if self.input[new_position[0]][new_position[1]] == "#":
                 self.direction = directions[(directions.index(self.direction) + 1) % len(directions)]
                 self.input[self.position[0]][self.position[1]] = "+"
+                just_turned = True
             else:
                 if self.input[self.position[0]][self.position[1]] != "+":
                     self.input[self.position[0]][self.position[1]] = anns[directions.index(self.direction)]
                 self.position = new_position
+                just_turned = False
             new_position = self.next_move(self.position, self.direction)
             i += 1
             # print(self.position)
@@ -77,16 +78,18 @@ class Day(DayFormat):
         #     print(x)
         # print(i)
 
+        # print(blockades)
         result = len(blockades)
         print(result)
 
     def check_if_loop(self, input, position, direction):
         directions = [(-1,0), (0,1), (1,0), (0,-1)]
         anns = ["^", ">", "v", "<"]
+        turns = [(position, direction)]
         direction = directions[(directions.index(direction) + 1) % len(directions)]
         new_position = self.next_move(position, direction)
         # turns it makes. list[(position, direction)]
-        turns = []
+        # turns = []
         while 0 <= new_position[0] < len(input) and 0 <= new_position[1] < len(input[0]):
             # if input[position[0]][position[1]] == "+" and input[new_position[0]][new_position[1]] == "#":
             #     return True
@@ -103,5 +106,6 @@ class Day(DayFormat):
                 position = new_position
             new_position = self.next_move(position, direction)
         return False
+
 
 Day()
