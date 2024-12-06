@@ -1,4 +1,5 @@
 from Utils.Day import DayFormat
+import copy
 
 
 class Day(DayFormat):
@@ -48,12 +49,13 @@ class Day(DayFormat):
         # position row, column or y,x
         new_position = self.next_move(self.position, self.direction)
         blockades = set()
-        i = 0
+        # i = 0
         while 0 <= new_position[0] < len(self.input) and 0 <= new_position[1] < len(self.input[0]):
-            if (self.input[new_position[0]][new_position[1]] != "#" and self.input[new_position[0]][new_position[1]] != start_position
+            if (self.input[new_position[0]][new_position[1]] != "#" and new_position != start_position # ChatGPT self.input[newpos] -> newpos
                 and new_position not in blockades):
                 # Make playing field with new block
-                input2 = [llist[:] for llist in self.input]
+                # input2 = [llist[:] for llist in self.input]
+                input2 = copy.deepcopy(self.input)
                 input2[new_position[0]][new_position[1]] = "#"
                 if self.check_if_loop(input2, self.position, self.direction):
                     blockades.add(new_position)
@@ -68,7 +70,8 @@ class Day(DayFormat):
                 self.position = new_position
             new_position = self.next_move(self.position, self.direction)
             i += 1
-            print(self.position)
+            # print(self.position)
+            print(i)
 
         # for x in self.input:
         #     print(x)
