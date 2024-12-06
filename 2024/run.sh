@@ -1,0 +1,1 @@
+python -m 2024.Days.day04
