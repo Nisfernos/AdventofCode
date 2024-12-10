@@ -7,7 +7,7 @@ class Day(DayFormat):
         super().__init__(2024, 9)
 
     def part_one(self):
-        self.input = self.test_input
+        # self.input = self.test_input
         self.input = [int(char) for line in self.input for char in line]
 
         cid = 0
@@ -123,4 +123,58 @@ class Day(DayFormat):
         print(result)
 
 
-Day()
+class DayFancy(DayFormat):
+
+    def __init__(self) -> None:
+        super().__init__(2024, 9)
+
+    def part_one(self):
+        # self.input = "2333133121414131402"
+        self.input = [int(char) for line in self.input for char in line]
+        self.input = self.input if len(self.input) % 2 == 1 else self.input.pop()
+
+        bid = 0
+        cid = 0
+        eid = len(self.input) // 2
+        brem = self.input[bid*2]
+        crem = self.input[cid]
+        erem = self.input[eid*2]
+        i = 0
+        result = 0
+        while bid < eid or erem != 0:
+            if cid % 2 == 0:
+                if brem == 0:
+                    bid += 1
+                    brem = self.input[bid*2]
+                    cid += 1
+                    crem = self.input[cid]
+                    continue
+                # print(bid, i)
+                result += i * bid
+                brem -= 1
+                i += 1
+            elif bid >= eid and erem != 0:
+                result += i * eid
+                erem -= 1
+                i += 1
+            else:
+                if crem == 0:
+                    cid += 1
+                    continue
+                if erem == 0:
+                    eid -= 1
+                    erem = self.input[eid*2]
+                    continue
+                result += i * eid
+                crem -= 1
+                erem -= 1
+                i += 1
+            
+        print(result)
+
+    def part_two(self):
+        pass
+
+
+# Day()
+DayFancy()
