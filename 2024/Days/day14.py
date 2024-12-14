@@ -113,6 +113,7 @@ class Day(DayFormat):
         inp = False
         second = 0
         while not inp:
+            # Checking for long line was hint from Reddit: https://www.reddit.com/r/adventofcode/comments/1hdwdak/comment/m1zfv5c/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
             if grid.valid_grid(6):
                 grid.print_grid(second)
 
